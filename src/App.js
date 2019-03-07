@@ -41,13 +41,13 @@ class CommentList extends React.Component{
     this.handleUsername = this.handleUsername.bind(this);
     this.handleComment = this.handleComment.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.onEnter = this.onEnter.bind(this);
+    // this.onEnter = this.onEnter.bind(this);
   }
 
   handleUsername(lowerState){
     this.setState({
       username : lowerState
-    }.bind(this));
+    });
   }
 
   handleComment(lowerState){
@@ -63,7 +63,7 @@ class CommentList extends React.Component{
         comment : this.state.comment,
       }
       this.setState({
-        comments : this.state.comment.concat([commentObj]),
+        comments : [...this.state.comments,commentObj],
         comment: '',
       })
     }
