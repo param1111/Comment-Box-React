@@ -1,39 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
+import TextBox from './TextBox.js';
 
-class Comment extends Component {
+class Comment extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      comment : [],
-      value: ''
+      open: false
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);    
+    this.toggleReply = this.toggleReply.bind(this);    
   }
 
-  handleChange(event) {
+  toggleReply() {
     this.setState({
-      value: event.target.value
+      open: !this.state.open
     });
   }
-
-  handleSubmit(event){
-    this.setState({
-      comment.concat(this.state.value)
-    })
-  }
   render() {
+    //console.log(this.props);
     return (
-      <div className="App">
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <h2>Comment Widget:</h2>
-            <textarea value= {this.state.value} onChange = {this.handleChange} />
-          </label>
-          <input id="name-handle" type = "submit" value="Submit" />
-        </form>
-        <h5>Comments {this.state.comment}</h5>
-        <ul id = "comment-list" />        
+      <div style={{border: '2px black solid'}}>
+        {`${this.props.commentObj.username}: ${this.props.commentObj.comment}`}
+        <button onClick={this.toggleReply}>Reply</button>
+        <div>
+          { this.state.open? <CommentList /> : ''}
+        </div>
       </div>
     );
   }
@@ -45,8 +35,9 @@ class CommentList extends React.Component{
     this.state = {
       comments: [],
       username: '',
-      comment: ''
+      comment: '',
     }
+    console.log(this);
     this.handleUsername = this.handleUsername.bind(this);
     this.handleComment = this.handleComment.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -56,7 +47,7 @@ class CommentList extends React.Component{
   handleUsername(lowerState){
     this.setState({
       username : lowerState
-    });
+    }.bind(this));
   }
 
   handleComment(lowerState){
@@ -69,11 +60,11 @@ class CommentList extends React.Component{
     if(this.state.comment !== '' ){
       const commentObj = {
         username : this.state.username,
-        comment : this.state.comment
+        comment : this.state.comment,
       }
       this.setState({
         comments : this.state.comment.concat([commentObj]),
-        comment: ''
+        comment: '',
       })
     }
   }
@@ -93,7 +84,7 @@ class CommentList extends React.Component{
           <div>{title}</div>
           <TextBox placeholder={'Username'} getInput={this.handleUsername} />
           <TextBox placeholder={'Leave a comment'} getInput={this.handleComment} />
-          <button onClick={this._onClick}>Submit</button>
+          <button onClick={this.handleClick}>Submit</button>
         </div> 
         <div>{commentSection}</div>
         {comments.map((comment)=>(<Comment commentObj={comment} />))}
@@ -102,4 +93,6 @@ class CommentList extends React.Component{
   }
 }
 
-export default Comment;
+
+
+export default CommentList;
